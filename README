@@ -22,6 +22,20 @@ Most of QEMU's 500-700 ms startup time is spent:
   Right now only flash is supported. 350 ms are saved, bringing the startup
   time down to 60 ms.
 
+Compile qboot
+=============
+
+Clone the source:
+
+    $ git clone https://github.com/bonzini/qboot.git
+
+Compile the qboot firmware (you may need to install the relevant build
+time dependancies):
+
+    $ make
+
+The result will be a 64K file named bios.bin.
+
 Usage
 =====
 
@@ -34,7 +48,7 @@ fw_cfg based example:
 cbfs-based example (pflash isn't the definitive interface though):
 
     $ dd if=/dev/zero of=boot.bin bs=4096 count=1
-    $ cbfstool cbfs.rom create -s 8m -B boot.bin  -m x86 -o 0x1000
+    $ cbfstool cbfs.rom create -s 8128k -B boot.bin  -m x86 -o 0x1000
     $ cbfstool cbfs.rom add -f /boot/vmlinuz-4.0.3-300.fc22.x86_64 -n vmlinuz -t raw
     $ echo 'console=ttyS0,115200,8n1' > cmdline
     $ cbfstool cbfs.rom add -f cmdline -n cmdline -t raw
@@ -45,6 +59,5 @@ cbfs-based example (pflash isn't the definitive interface though):
 TODO
 ====
 
-* ACPI tables
 * SMBIOS tables
-* Multiboot loading
+* Multiboot loading from pflash
